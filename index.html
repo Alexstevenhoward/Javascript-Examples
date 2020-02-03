@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--Alexander Howard-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tesla Vechicle Buying Guide</title>
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+    ></script>
+    <script type="text/javascript" src="js/lightbox.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $("#tabs").tabs();
+      });
+    </script>
+    <script type="text/javascript">
+      function calculateMonthlyPayments() {
+        //function to calculate values and catch errors
+
+        // clear out error messages
+        document.getElementById("loanAmountError").innerHTML = "";
+        document.getElementById("numberOfYearsError").innerHTML = "";
+        document.getElementById("rateError").innerHTML = "";
+        document.getElementById("monthlyPayments").innerHTML = "";
+
+        //alert('function called');
+        var loanAmount = document.getElementById("loanAmount").value;
+        //alert(loanAmount);
+        var numberOfYears = document.getElementById("numberOfYears").value;
+        //alert(numberOfYears);
+        var nonConvertedRate = document.getElementById("rate").value;
+
+        var rate = nonConvertedRate * 0.01;
+        //alert(rate)
+        var k = 12;
+
+        // Formula for loan calculation
+        var exp = -1 * numberOfYears * k;
+        var rateDivk = rate / k;
+        var mid = 1 + rateDivk;
+        var equation = Math.pow(mid, exp);
+        var hi = 1 - equation;
+        var monthlyPayments = loanAmount / (hi / rateDivk);
+
+        if (isNaN(loanAmount) || loanAmount <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("loanAmountError").innerHTML =
+            "Please enter a valid number greater than 0 for Loan Amount";
+        } else if (isNaN(numberOfYears) || numberOfYears <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("numberOfYearsError").innerHTML =
+            "Please enter a valid number greater than 0 for Number of Years";
+        } else if (isNaN(rate) || rate <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("rateError").innerHTML =
+            "Please enter a valid number greater than 0 for Interest rate";
+        } else {
+          document.getElementById("monthlyPayments").innerHTML =
+            "Your Monthly Payment is " + monthlyPayments.toFixed(2);
+        } //end of conditional statement
+      } //end of function
+
+      function calculateGasSavings() {
+        //function to calculate values and catch errors
+
+        // clear out error messages
+        document.getElementById("mpgError").innerHTML = "";
+        document.getElementById("mpyError").innerHTML = "";
+        document.getElementById("cpgError").innerHTML = "";
+        document.getElementById("annualGasCost").innerHTML = "";
+        document.getElementById("costOfCharging").innerHTML = "";
+        document.getElementById("gasSavings").innerHTML = "";
+
+        //alert('function called');
+        var mpg = document.getElementById("mpg").value;
+        //alert(mpg);
+        var mpy = document.getElementById("mpy").value;
+        //alert(mpy);
+        var cpg = document.getElementById("cpg").value;
+
+        // Gallons Per year
+        var gpy = mpy / mpg;
+
+        var annualGasCost = gpy * cpg;
+        // Annual Cost of Charging
+        var costOfCharging = mpy * 0.0006;
+        // Annual Gas Savings
+        var gasSavings = annualGasCost - costOfCharging;
+
+        if (isNaN(mpg) || mpg <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("mpgError").innerHTML =
+            "Please enter a valid number greater than 0 for Miles Per Gallon";
+        } else if (isNaN(mpy) || mpy <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("mpyError").innerHTML =
+            "Please enter a valid number greater than 0 for Miles Driven Per Year";
+        } else if (isNaN(cpg) || cpg <= 0) {
+          //alert("Please enter a valid number");
+          document.getElementById("cpgError").innerHTML =
+            "Please enter a valid number greater than 0 for Cost Per Gallon";
+        } else {
+          document.getElementById("annualGasCost").innerHTML =
+            "Your Annual Cost of Gas is $" + annualGasCost.toFixed(2);
+          document.getElementById("costOfCharging").innerHTML =
+            "The Annual Cost of driving a Tesla " +
+            mpy +
+            " miles is $" +
+            costOfCharging.toFixed(2);
+          document.getElementById("gasSavings").innerHTML =
+            "Your Estimated Annual Gas Savings is $" + gasSavings.toFixed(2);
+        } //end of conditional statement
+      } //end of function
+
+      function clearData() {
+        //function to clear the data in the form.
+
+        //clear error messages
+        document.getElementById("loanAmountError").innerHTML = "";
+        document.getElementById("numberOfYearsError").innerHTML = "";
+        document.getElementById("rateError").innerHTML = "";
+
+        //clear given values
+        document.getElementById("loanAmount").value = "";
+        document.getElementById("numberOfYears").value = "";
+        document.getElementById("rate").value = "";
+
+        //clear calulated value responses
+        document.getElementById("monthlyPayments").innerHTML = "";
+      } //end of function
+
+      function clearDataGasSavings() {
+        //function to clear the data in the form.
+
+        //clear error messages
+        document.getElementById("mpgError").innerHTML = "";
+        document.getElementById("mpyError").innerHTML = "";
+        document.getElementById("cpgError").innerHTML = "";
+        //clear given values
+        document.getElementById("mpg").value = "";
+        document.getElementById("mpy").value = "";
+        document.getElementById("cpg").value = "";
+
+        //clear calulated value responses
+        document.getElementById("annualGasCost").innerHTML = "";
+        document.getElementById("costOfCharging").innerHTML = "";
+        document.getElementById("gasSavings").innerHTML = "";
+      } //end of function
+
+      //load events
+      window.onload = function() {
+        document.getElementById("btnCalc").onclick = calculateMonthlyPayments;
+        document.getElementById("btnCalcGas").onclick = calculateGasSavings;
+        document.getElementById("btnClear").onclick = clearData;
+        document.getElementById("btnClearGas").onclick = clearDataGasSavings;
+      };
+    </script>
+  </head>
+
+  <body>
+    <section>
+      <h1>Tesla Vechicle Purchasing Guide</h1>
+      <!-- Tabs HTML code. -->
+
+      <div id="tabs">
+        <ul>
+          <li><a href="#teslaOptions">Tesla Options</a></li>
+          <li><a href="#tabs-2">Loan Calculator</a></li>
+          <li><a href="#tabs-3">Gas Savings Caculator</a></li>
+          <li><a href="#tabs-4">About Tesla</a></li>
+        </ul>
+        <div id="tabs-4">
+          <h1>What is Tesla</h1>
+          <h3>Why should I buy a Tesla.</h3>
+          <p>
+            Tesla was founded in 2003 by a group of engineers who wanted to
+            prove that people didn’t need to compromise to drive electric – that
+            electric vehicles can be better, quicker and more fun to drive than
+            gasoline cars. Today, Tesla builds not only all-electric vehicles
+            but also infinitely scalable clean energy generation and storage
+            products. Tesla believes the faster the world stops relying on
+            fossil fuels and moves towards a zero-emission future, the better.
+            Launched in 2008, the Roadster unveiled Tesla’s cutting-edge battery
+            technology and electric powertrain. From there, Tesla designed the
+            world’s first ever premium all-electric sedan from the ground up –
+            Model S – which has become the best car in its class in every
+            category. Combining safety, performance, and efficiency, Model S has
+            reset the world’s expectations for the car of the 21st century with
+            the longest range of any electric vehicle, over-the-air software
+            updates that make it better over time, and a record 0-60 mph
+            acceleration time of 2.28 seconds as measured by Motor Trend. In
+            2015, Tesla expanded its product line with Model X, the safest,
+            quickest and most capable sport utility vehicle in history that
+            holds 5-star safety ratings across every category from the National
+            Highway Traffic Safety Administration. Completing CEO Elon Musk’s
+            “Secret Master Plan,” in 2016, Tesla introduced Model 3, a
+            low-priced, high-volume electric vehicle that began production in
+            2017. Soon after, Tesla unveiled the safest, most comfortable truck
+            ever – Tesla Semi – which is designed to save owners at least
+            $200,000 over a million miles based on fuel costs alone. All Tesla
+            vehicles are produced at its factory in Fremont, California, where
+            the vast majority of the vehicle’s components are also made. To
+            achieve our goal of having the safest factories in the world, Tesla
+            is taking a proactive approach to safety, requiring production
+            employees to participate in a multi-day training program before ever
+            setting foot on the factory floor. From there, Tesla continues to
+            provide on-the-job training and track performance daily so that
+            improvements can be made quickly. The result is that Tesla’s safety
+            rate continues to improve while Model 3 production ramps. To create
+            an entire sustainable energy ecosystem, Tesla also manufactures a
+            unique set of energy solutions, Powerwall, Powerpack and Solar Roof,
+            enabling homeowners, businesses, and utilities to manage renewable
+            energy generation, storage, and consumption. Supporting Tesla’s
+            automotive and energy products is Gigafactory 1 – a facility
+            designed to significantly reduce battery cell costs. By bringing
+            cell production in-house, Tesla manufactures batteries at the
+            volumes required to meet production goals, while creating thousands
+            of jobs. And this is just the beginning. With Tesla building its
+            most affordable car yet, Tesla continues to make products accessible
+            and affordable to more and more people, ultimately accelerating the
+            advent of clean transport and clean energy production. Electric
+            cars, batteries, and renewable energy generation and storage already
+            exist independently, but when combined, they become even more
+            powerful – that’s the future we want.
+          </p>
+          <h5></h5>
+        </div>
+        <div id="teslaOptions">
+          <section>
+            <h1>Click on a Model to see:</h1>
+            <ul>
+              <li>Model Name</li>
+              <li>Price</li>
+              <li>Range</li>
+              <li>Horse Power</li>
+              <li>Release Date</li>
+            </ul>
+            <br />
+
+            <a
+              href="images/modelspic.jpg"
+              data-lightbox="vecta"
+              data-title="MODEL S <br> Price: From $75,000 USD <br> Range: 370 miles <br> Horse Power: 518 <br> Released: December 14, 2014"
+            >
+              <img src="images/thumbnailmodels.jpg" alt="" />
+            </a>
+            <a
+              href="images/model3pic.jpg"
+              data-lightbox="vecta"
+              data-title="MODEL 3 <br> Price: From $35,000 USD <br> Range: 250 miles <br> Horse Power: 260 <br> Released: July 7, 2017"
+            >
+              <img src="images/thumbnailmodel3.jpg" alt="" />
+            </a>
+            <a
+              href="images/modelxpic.jpg"
+              data-lightbox="vecta"
+              data-title="MODEL X <br> Price: From $81,000 USD <br> Range: 250 miles <br> Horse Power: 518 <br> Released: July 13, 2016"
+            >
+              <img src="images/thumbnailmodelx.jpg" alt="" />
+            </a>
+            <a
+              href="images/modelypic.jpg"
+              data-lightbox="vecta"
+              title="MODEL Y <br> Price: TBD USD <br> Range: 300 miles <br> Horse Power: 450 <br> Released: EST. 2020 "
+            >
+              <img src="images/thumbnailmodely.jpg" />
+            </a>
+            <a
+              href="images/roadsterpic.jpg"
+              data-lightbox="vecta"
+              data-title="ROADSTER <br> Price: TBD <br> Range: TBD <br> Horse Power: TBD <br> Released: EST. 2020"
+            >
+              <img src="images/thumbnailroadster.jpg" />
+            </a>
+            <a
+              href="images/cybertruckpic.jpg"
+              data-lightbox="vecta"
+              data-title="CYBERTRUCK <br> Price: From $39,900 USD <br> Range: 250 miles <br> Horse Power: 800 <br> Released: EST. 2021"
+            >
+              <img src="images/thumbnailcybertruck.jpg" />
+            </a>
+          </section>
+        </div>
+        <div id="tabs-2">
+          <h1>Calculate Your Monthly Payments</h1>
+          <h3>Enter the information below to see your monthly payment</h3>
+
+          <form id="mpgform">
+            <label for="loanAmount">Loan Amount: </label>
+            <input type="text" id="loanAmount" name="loanAmount" />
+            <span class="error" id="loanAmountError"> </span>
+
+            <label for="numberOfYears">Number of Years: </label>
+            <input type="text" id="numberOfYears" name="numberOfYears" />
+            <span class="error" id="numberOfYearsError"> </span>
+
+            <label for="rate">Interest Rate %: </label>
+            <input type="text" id="rate" name="rate" />
+            <span class="error" id="rateError"> </span>
+            <br />
+            <input
+              type="button"
+              id="btnCalc"
+              value="Calculate Monthly Payments"
+              class="clear"
+            />
+
+            <input type="button" id="btnClear" value="Clear Form" />
+          </form>
+          <br />
+
+          <p id="monthlyPayments"></p>
+        </div>
+        <div id="tabs-3">
+          <h1>Calculate Your Estimated Gas Savings</h1>
+          <h3>Enter the information below to see your gas savings</h3>
+
+          <form id="mpgform">
+            <label for="mpg">MPG of Current Car: </label>
+            <input type="text" id="mpg" name="mpg" />
+            <span class="error" id="mpgError"> </span>
+
+            <label for="cpg">Cost Per Gallon: </label>
+            <input type="text" id="cpg" name="cpg" />
+            <span class="error" id="cpgError"> </span>
+
+            <label for="mpy">Miles Driven Per Year: </label>
+            <input type="text" id="mpy" name="mpy" />
+            <span class="error" id="mpyError"> </span>
+            <br />
+            <input
+              type="button"
+              id="btnCalcGas"
+              value="Calculate Estimated Gas Savings"
+              class="clear"
+            />
+
+            <input type="button" id="btnClearGas" value="Clear Form" />
+          </form>
+          <br />
+          <p id="annualGasCost"></p>
+          <p id="costOfCharging"></p>
+          <h3 id="gasSavings"></h3>
+        </div>
+      </div>
+      <!-- End Tabs HTML code. -->
+    </section>
+  </body>
+</html>
